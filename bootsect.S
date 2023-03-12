@@ -1,3 +1,5 @@
+SYSSIZE = 0x3000
+
 SETUPLEN  = 4
 
 BOOTSEG   = 0x7c0
