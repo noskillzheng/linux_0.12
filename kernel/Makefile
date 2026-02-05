@@ -1,9 +1,9 @@
-GCC := gcc-7
+GCC := gcc
 USE_DEBUG :=
 CCFLAG := -I../include -nostdinc -ffreestanding -Wall -fomit-frame-pointer -fno-pic -fno-stack-protector -c -m32 $(USE_DEBUG)
-LDFLAG := -Ttext 0x0 -s --oformat binary -m elf_i386
+LDFLAG := -T kernel.ld -s --oformat binary -m elf_i386
 INCDIR := ../include
-OBJS   := head.o main.o sched.o
+OBJS   := head.o main.o sched.o chr_dev/chr_drv.a
 
 system: $(OBJS)
 	$(LD) $(LDFLAG) -e startup_32 -o $@ $^
@@ -17,7 +17,10 @@ main.o : main.c
 sched.o : sched.c
 	$(GCC) $(CCFLAG) -o $@ $<
 
-clean : 
-	rm *.o
-	rm system
+chr_dev/chr_drv.a:chr_dev/*.c
+	cd chr_dev;make chr_drv.a;cd ..
 
+clean : 
+	rm -f *.o
+	rm -f system
+	cd chr_dev;make clean;cd ..
