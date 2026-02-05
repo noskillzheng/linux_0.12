@@ -1,12 +1,13 @@
-AS := as
-LD := ld -m elf_x86_64
+AS := as --32
+LD := ld -m elf_i386
 
-LDFLAG := -Ttext 0x0 -s --oformat binary
+LDFLAG := -T boot.ld -s --oformat binary
 
 image : linux.img
 
 linux.img : tools/build bootsect setup kernel/system
 	./tools/build bootsect setup kernel/system > $@
+	truncate -s 1474560 $@
 
 tools/build : tools/build.c
 	gcc -o $@ $<

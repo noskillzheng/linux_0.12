@@ -1,8 +1,10 @@
 #define __LIBRARY__
 
+#include <linux/tty.h>
+
 void main(void) 
 {
-    __asm__("int $0x80 \n\r"::);
+    tty_init();
     __asm__ __volatile__(
             "loop:\n\r"
             "jmp loop"
